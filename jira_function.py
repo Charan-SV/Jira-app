@@ -1,4 +1,4 @@
-import argparse
+# jira_functions.py
 import requests
 from requests.auth import HTTPBasicAuth
 import json
@@ -20,16 +20,3 @@ def get_projects():
     
     # Print the table
     print(tabulate(table_data, headers="firstrow", tablefmt="grid"))
-
-def main():
-    parser = argparse.ArgumentParser(description="Jira Projects CLI")
-    parser.add_argument('-gp', '--get-projects', action='store_true', help='Get Jira projects')
-    args = parser.parse_args()
-
-    if not any(vars(args).values()):
-        parser.print_help()
-    elif args.get_projects:
-        get_projects()
-
-if __name__ == "__main__":
-    main()
