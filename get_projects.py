@@ -2,6 +2,7 @@ import argparse
 import requests
 from requests.auth import HTTPBasicAuth
 import json
+from tabulate import tabulate
 
 # Create the argument parser
 parser = argparse.ArgumentParser(
@@ -24,7 +25,7 @@ else:
     if args.get_projects:
         # Define the URL and authentication
         url = "https://charan-s-v.atlassian.net/rest/api/3/project/search"
-        auth = HTTPBasicAuth("charanv@devtools.in", "ATATT3xFfGF0bISEkv0NaZgJZ6w3uDw1mHjD9rb6BHYqxMIpqs1RcF1OAY7f7L_cxNOOvda2-A9Rb-SFGdWSyV6RKRp8Oksv_AJQSc7NXR3SWetMOzgdJrwPAw6oIzUj-jltLQ9mY4PpKWZN9lMrid7pEqRhM-89kVYFkqKhElwF5mYL8FTfaOc=48B9B27A")
+        auth = HTTPBasicAuth("charanv@devtools.in", "ATATT3xFfGF06Ta38Jx42fFHq2keq2fXYoa-iykLbW5c3FeYTSFNeKdXs5yOSeq5DqUJOVCI-TqCSCh5qmImor3xefctHQGqUo06-fVHm2FrV5h3_wish_PiptldbJw9zwAyR5P_Ep0mQRQeK8ix7awjf7v_Y1EHoibWEz3NIFV5L7tvJL0KU_I=F2B549A4")
         headers = {
             "Accept": "application/json"
         }
@@ -40,9 +41,13 @@ else:
         # Parse the JSON response
         projects = json.loads(response.text).get('values', [])
         
-        # Print the project names
+        # Prepare the data for tabulate
+        table_data = [["Name", "Key"]]
         for project in projects:
-            print(project.get('name'))
+            table_data.append([project.get('name'), project.get('key')])
+        
+        # Print the table
+        print(tabulate(table_data, headers="firstrow", tablefmt="grid"))
     else:
         # Print the default message
         print('[DEFAULT]: DEFAULT')
