@@ -1,5 +1,0 @@
-Metadata-Version: 2.1
-Name: jira
-Version: 0.1
-Requires-Dist: requests
-Requires-Dist: tabulate
