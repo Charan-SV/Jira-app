@@ -1,0 +1,10 @@
+README.md
+jira_functions.py
+main.py
+setup.py
+jira.egg-info/PKG-INFO
+jira.egg-info/SOURCES.txt
+jira.egg-info/dependency_links.txt
+jira.egg-info/entry_points.txt
+jira.egg-info/requires.txt
+jira.egg-info/top_level.txt
