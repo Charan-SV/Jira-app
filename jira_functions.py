@@ -12,7 +12,7 @@ load_dotenv()
 JIRA_API_TOKEN = os.getenv("JIRA_API_TOKEN")
 
 def get_projects():
-    url = "https://charan-s-v.atlassian.net/rest/api/3/project/search?expand=insight"
+    url = "https://charan-s-v.atlassian.net/rest/api/3/project/search?"
     auth = HTTPBasicAuth("charanv@devtools.in", JIRA_API_TOKEN) 
     headers = {
         "Accept": "application/json"
