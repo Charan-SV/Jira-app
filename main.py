@@ -1,5 +1,5 @@
 import argparse
-from jira_functions import get_projects, get_project_details, create_project
+from jira_functions import get_projects, get_project_details, create_project, delete_project, restore_project
 
 def main():
     parser = argparse.ArgumentParser(description="Jira Projects CLI")
@@ -14,6 +14,12 @@ def main():
     create_group.add_argument('--project-type-key', type=str, help='Project type key for the new project')
     create_group.add_argument('--leadid', type=str, help='Lead account ID for the new project')
 
+    # Argument for deleting a project
+    parser.add_argument('-dp', '--delete_project', type=str, help='Delete a Jira project by key')
+
+    # Argument for restoring a project
+    parser.add_argument('-rp', '--restore_project', type=str, help='Restore a Jira project by key')
+
     args = parser.parse_args()
 
     if not any(vars(args).values()):
@@ -27,6 +33,10 @@ def main():
             create_project(args.key, args.name, args.project_type_key, args.leadid)
         else:
             print("Missing arguments for creating a project. Please provide --key, --name, --project-type-key, and --leadid.")
+    elif args.delete_project:
+        delete_project(args.delete_project)
+    elif args.restore_project:
+        restore_project(args.restore_project)
     else:
         parser.print_help()
 

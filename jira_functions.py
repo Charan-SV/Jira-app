@@ -12,7 +12,7 @@ load_dotenv()
 JIRA_API_TOKEN = os.getenv("JIRA_API_TOKEN")
 
 def get_projects():
-    url = "https://charan-s-v.atlassian.net/rest/api/3/project/search"
+    url = "https://charan-s-v.atlassian.net/rest/api/3/project/search?expand=insight"
     auth = HTTPBasicAuth("charanv@devtools.in", JIRA_API_TOKEN) 
     headers = {
         "Accept": "application/json"
@@ -21,9 +21,9 @@ def get_projects():
     projects = json.loads(response.text).get('values', [])
     
     # Prepare the data for tabulate
-    table_data = [["Name", "Key"]]
+    table_data = [["Name", "Key","totalIssueCount","lastIssueUpdateTime"]]
     for project in projects:
-        table_data.append([project.get('name'), project.get('key')])
+        table_data.append([project.get('name'), project.get('key'),project.get('insight', {}).get('totalIssueCount'),project.get('insight', {}).get('lastIssueUpdateTime')])
     
     # Print the table
     print(tabulate(table_data, headers="firstrow", tablefmt="grid"))
@@ -72,4 +72,33 @@ def create_project(key, name, project_type_key, lead_account_id):
         print("Project created successfully.")
     else:
         print(f"Failed to create project. Status code: {response.status_code}")
+        print(response.text)
+
+def delete_project(project_key):
+    url = f"https://charan-s-v.atlassian.net/rest/api/3/project/{project_key}"
+    auth = HTTPBasicAuth("charanv@devtools.in", JIRA_API_TOKEN) 
+    headers = {
+        "Accept": "application/json"
+    }
+    response = requests.delete(url, auth=auth, headers=headers)
+    
+    if response.status_code == 204:
+        print("Project deleted successfully.")
+    else:
+        print(f"Failed to delete project. Status code: {response.status_code}")
+        print(response.text)
+
+
+def restore_project(project_key):
+    url = f"https://charan-s-v.atlassian.net/rest/api/3/project/{project_key}/restore"
+    auth = HTTPBasicAuth("charanv@devtools.in", JIRA_API_TOKEN) 
+    headers = {
+        "Accept": "application/json"
+    }
+    response = requests.post(url, auth=auth, headers=headers)
+    
+    if response.status_code == 200:
+        print("Project restored successfully.")
+    else:
+        print(f"Failed to restore project. Status code: {response.status_code}")
         print(response.text)
